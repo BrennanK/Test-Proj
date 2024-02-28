@@ -56,6 +56,9 @@ void ATestCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
+	timePassedForSpawn = 0.0f;
+	//GetWorld()->GetTimerManager().SetTimer(delayTimer, this, &ATestCharacter::delaySpawn, GetWorld()->GetDeltaSeconds(), true);
+
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -66,8 +69,27 @@ void ATestCharacter::BeginPlay()
 	}
 }
 
+
+
 //////////////////////////////////////////////////////////////////////////
 // Input
+
+void ATestCharacter::delaySpawn()
+{
+	if (timePassedForSpawn > 2.0f)
+	{
+		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+		{
+			if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+			{
+				Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			}
+		}
+
+		GetWorld()->GetTimerManager().ClearTimer(delayTimer);
+	}
+	timePassedForSpawn += GetWorld()->GetDeltaSeconds();
+}
 
 void ATestCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {

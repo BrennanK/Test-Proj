@@ -37,6 +37,8 @@ class ATestCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	FTimerHandle delayTimer;
+	float timePassedForSpawn;
 public:
 	ATestCharacter();
 	
@@ -51,6 +53,8 @@ protected:
 			
 
 protected:
+
+	void delaySpawn();
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
