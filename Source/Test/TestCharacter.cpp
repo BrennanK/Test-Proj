@@ -69,6 +69,11 @@ void ATestCharacter::BeginPlay()
 	}
 }
 
+void ATestCharacter::overridePossesion(AController* nextController)
+{
+	PossessedBy(nextController);
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,6 +82,7 @@ void ATestCharacter::BeginPlay()
 void ATestCharacter::delaySpawn()
 {
 	if (timePassedForSpawn > 2.0f)
+		
 	{
 		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 		{
@@ -85,7 +91,10 @@ void ATestCharacter::delaySpawn()
 				Subsystem->AddMappingContext(DefaultMappingContext, 0);
 			}
 		}
-
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 14.0f, FColor::Red, "No controller found");
+		}
 		GetWorld()->GetTimerManager().ClearTimer(delayTimer);
 	}
 	timePassedForSpawn += GetWorld()->GetDeltaSeconds();
